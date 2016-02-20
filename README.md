@@ -30,4 +30,4 @@ Jalankan seperti biasa dan tunggu hingga selesai:
 
     $ ./smp.rb
 
-**Opsional**: untuk mengatur di mana pdf akan disimpan, edit variabel `folder_simpan` pada skrip yang akan dijalankan (folder default adalah `downloads`).
+**Opsional**: untuk mengatur di mana pdf akan disimpan, edit variabel `folder_simpan` pada skrip yang akan dijalankan (folder default adalah `downloads/<jenjang pendidikan>`).
