@@ -4,7 +4,8 @@ require 'nokogiri'
 require 'open-uri'
 require 'fileutils'
 
-url_awal = "http://bse.kemdikbud.go.id/buku/bukusmp"
+folder_simpan = "downloads".gsub(/\/$/, "")
+awal_url = "http://bse.kemdikbud.go.id/buku/bukusmp"
 bagian = {
   :kelas7 => ["Bahasa-Indonesia", "Bahasa-Inggris", "Ilmu-Pengetahuan-Alam", "Ilmu-Pengetahuan-Sosial", "Keterampilan-dan-Kesenian", "Matematika", "Penjasorkes", "PKn", "TIK"],
   :kelas8 => ["Bahasa-Indonesia", "Bahasa-Inggris", "Ilmu-Pengetahuan-Alam", "Ilmu-Pengetahuan-Sosial", "Matematika", "Penjasorkes", "PKn", "TIK"],
@@ -13,26 +14,32 @@ bagian = {
 
 bagian.each do |kelas, daftar_matpel|
   daftar_matpel.each do |matpel|
-    puts "=== #{kelas}: #{matpel} ===\n\n"
+    puts "MULAI #{kelas}: #{matpel}\n\n"
+
     offset = 0
+
     loop do
-      doc = Nokogiri::HTML(open "#{url_awal}/#{kelas}/#{matpel}/#{offset}")
-      links = doc.css("td#BukuJudul a")
+      doc = Nokogiri::HTML(open "#{awal_url}/#{kelas}/#{matpel}/#{offset}")
+      links = doc.css "td#BukuJudul a"
 
       break if links.count.zero?
 
       links.each do |link|
         id_buku = link[:href].split("/").last
         judul_buku = link.content
-        dl_link = "http://bse.kemdikbud.go.id/download/fullbook/#{id_buku}"
-        dl_file = "downloads/#{kelas}/#{matpel}/#{judul_buku} (#{id_buku}).pdf"
-        unless File.exist? dl_file
-          FileUtils.mkdir_p "downloads/#{kelas}/#{matpel}"
-          system "wget -O \"#{dl_file}\" #{dl_link}"
+        link_unduh = "http://bse.kemdikbud.go.id/download/fullbook/#{id_buku}"
+        save_as = "#{folder_simpan}/#{kelas}/#{matpel}/#{judul_buku} (#{id_buku}).pdf"
+        
+        unless File.exist? save_as
+          FileUtils.mkdir_p "#{folder_simpan}/#{kelas}/#{matpel}"
+          system "wget -O \"#{save_as}\" #{link_unduh}"
         else
-          puts "SKIP #{dl_file}"
+          puts "SKIP #{save_as}"
         end
+
+        File.rename(save_as, save_as.gsub(".pdf", ".txt")) if File.size(save_as) == 85
       end
+
       offset += 5
     end
   end
