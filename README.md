@@ -10,6 +10,12 @@ Sebelum menjalankan skrip ini, pastikan Anda sudah memasang:
   - Ruby & Bundler (ikuti bagian awal dari [tutorial ini](https://gorails.com/setup/ubuntu/15.04))
   - wget (untuk melakukan pengunduhan)
 
+## Unduh
+
+Untuk mengunduh bse downloaders terbaru silakan klik [di sini](https://github.com/ukazap/bse_downloaders/archive/master.zip) atau clone repository ini:
+
+    $ git clone https://github.com/ukazap/bse_downloaders.git
+
 ## Persiapan
 
 Install dependensi (nokogiri, supaya skrip bisa menganalisa halaman web) dengan perintah gem install:
